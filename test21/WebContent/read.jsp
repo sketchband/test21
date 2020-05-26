@@ -1,9 +1,9 @@
+<%@page import="test21.BoardBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8"); %>
 <jsp:useBean id="dao" class="test21.BoardDAO"/>
-<jsp:useBean id="bean" class="test21.BoardBean"/>
-<jsp:setProperty property="*" name="bean"/>    
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +11,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-<% int num = Integer.parseInt(request.getParameter("num")); %>
+<% 
+   int num = Integer.parseInt(request.getParameter("num"));
+   BoardBean bean = dao.BoardRead(num);
+%>
 <div align="center">
 <table>
 <tr>
@@ -34,8 +37,8 @@
 </tr>
 <tr>
 <td>
-<input type="button" value="답글" onclick="#">
-<input type="button" value="수정" onclick="#">
+<input type="button" value="답글" onclick="location.href='reply.jsp?num=<%=bean.getNum()%>&ref=<%=bean.getRef()%>&pos=<%=bean.getPos()%>&depth=<%=bean.getDepth()%>'">
+<input type="button" value="수정" onclick="location.href='Pw_check.jsp?num=<%=bean.getNum()%>'">
 <input type="button" value="삭제" onclick="#">
 <input type="button" value="리스트" onclick="location.href='list.jsp'">
 </table>

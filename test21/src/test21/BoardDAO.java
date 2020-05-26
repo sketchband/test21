@@ -136,4 +136,61 @@ public class BoardDAO {
 		return bean;
 	}
 	
+	public void reply_Board(BoardBean bean) {
+		Connection con = null;
+		PreparedStatement stmt = null;
+		String sql = null;
+		int ref = bean.getRef();
+		int pos = bean.getPos();
+		int depth = bean.getDepth();
+		
+		try {
+			con = pool.getConnection();
+			sql = "update Board8 set pos = pos+1 where ref = ? and pos > ?";
+			stmt = con.prepareStatement(sql);
+			stmt.setInt(1, ref);
+			stmt.setInt(2, pos);
+			stmt.executeUpdate();
+			
+			sql = "insert into Board8 values(?,?,?,?,0,?,?,?,?,?,now())";
+			stmt = con.prepareStatement(sql);
+			stmt.setInt(1, bean.getNum());
+			stmt.setInt(2, ref);
+			stmt.setInt(3, pos+1);
+			stmt.setInt(4, depth+1);
+			stmt.setString(5, bean.getSubject());
+			stmt.setString(6, bean.getName());
+			stmt.setString(7, bean.getPw());
+			stmt.setString(8, bean.getEmail());
+			stmt.setString(9, bean.getContent());
+			stmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(con,stmt);
+		}
+	}
+	
+	public String Check(int num) {
+		Connection con = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		String pw = null;
+		
+		try {
+			con = pool.getConnection();
+			sql = "select pw from Board8 where num = ?";
+			stmt = con.prepareStatement(sql);
+			stmt.setInt(1, num);
+			rs = stmt.executeQuery();
+			if(rs.next())
+				pw = rs.getString(1);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(con,stmt,rs);
+		}
+		return pw;
+	}
 }
