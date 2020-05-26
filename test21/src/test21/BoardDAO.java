@@ -103,4 +103,37 @@ public class BoardDAO {
 		
 	}
 	
+	public BoardBean BoardRead(int num) {
+		Connection con = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		BoardBean bean = new BoardBean();
+		try {
+			con = pool.getConnection();
+			String sql = "select * from Board8 where num = ?";
+			stmt = con.prepareStatement(sql);
+			stmt.setInt(1, num);
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				bean.setNum(rs.getInt("num"));
+				bean.setRef(rs.getInt("ref"));
+				bean.setPos(rs.getInt("pos"));
+				bean.setDepth(rs.getInt("depth"));
+				bean.setCount(rs.getInt("count"));
+				bean.setSubject(rs.getString("subject"));
+				bean.setName(rs.getString("name"));
+				bean.setPw(rs.getString("pw"));
+				bean.setEmail(rs.getString("email"));
+				bean.setContent(rs.getString("content"));
+				bean.setRegdate(rs.getString("regdate"));
+			}
+				
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(con,stmt,rs);
+		}
+		return bean;
+	}
+	
 }

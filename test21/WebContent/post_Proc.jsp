@@ -12,7 +12,10 @@
 </head>
 <body>
 
-<% dao.post_Proc(bean); %>
+<% dao.post_Proc(bean);%>
+<script type="text/javascript">
+location.href="list.jsp";
+</script>
 
 </body>
 </html>
