@@ -36,11 +36,13 @@
 </tr>
 <tr>
 <td>내용</td>
-<td><textarea rows="15" cols="60" name="content"><%=bean.getContent() %></textarea></td>
+<td><textarea rows="15" cols="60" name="content"><%=bean.getContent() %></textarea>
+	<input type="hidden" name="num" value="<%=num%>">
+</td>
 </tr>
 <tr>
-<td><input type="submit" value="작성">
-	<input type="button" value="취소" onclick="location.href='list.jsp'">
+<td><input type="submit" value="수정">
+	<input type="button" value="취소" onclick="history.go(-2)">
 </td>
 
 </table>

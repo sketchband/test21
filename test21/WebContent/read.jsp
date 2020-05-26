@@ -39,7 +39,7 @@
 <td>
 <input type="button" value="답글" onclick="location.href='reply.jsp?num=<%=bean.getNum()%>&ref=<%=bean.getRef()%>&pos=<%=bean.getPos()%>&depth=<%=bean.getDepth()%>'">
 <input type="button" value="수정" onclick="location.href='Pw_check.jsp?num=<%=bean.getNum()%>'">
-<input type="button" value="삭제" onclick="#">
+<input type="button" value="삭제" onclick="location.href='Delete_pw.jsp?num=<%=bean.getNum()%>'">
 <input type="button" value="리스트" onclick="location.href='list.jsp'">
 </table>
 </div>
