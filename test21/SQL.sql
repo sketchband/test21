@@ -1,4 +1,4 @@
-CREATE TABLE Board7(
+CREATE TABLE Board8(
 num int primary key auto_increment,
 ref int,
 pos int,
@@ -12,8 +12,8 @@ content text,
 regdate date
 )engine=innodb charset=utf8;
 
-select * from Board7;
-drop table Board7;
+select * from Board8;
+drop table Board8;
 
 create table MEMBER5(
 id char(20) primary key,
