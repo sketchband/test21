@@ -1,16 +1,27 @@
+<%@page import="test21.BoardDAO"%>
 <%@page import="test21.BoardBean"%>
 <%@page import="java.util.Vector"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8");%>
-<jsp:useBean id="dao" class="test21.BoardDAO"/>
 <% 
-	String keyWord = "",keyField="";
-	int start = 0;
-	int end = 10;
+	//String keyWord = "",keyField="";
+	
+	int pageRecords = 5;
+	String pageNum = request.getParameter("pageNum");
+	if(pageNum==null){
+		pageNum = "1";
+	}
+	
+	int nowPage = Integer.parseInt(pageNum);
+	int startRow = (nowPage-1)*pageRecords+1;
+	int endRow = pageRecords;
+	int totalRecords = 0;
+	
+	BoardDAO dao = new BoardDAO();
+	totalRecords = dao.getAllCount();
 	Vector<BoardBean> vlist = null;
 	int listSize = 0;
-	int pageRecords = 10;
 %>    
 <!DOCTYPE html>
 <html>
@@ -34,13 +45,13 @@
 <td width="20%">조회수</td>
 </tr>
 <%
-	vlist = dao.BoardList(keyWord, keyField, start, end);
+	vlist = dao.BoardList(startRow, endRow);
 	listSize = vlist.size();
 	if(vlist.isEmpty()){
 		out.println("등록 된 게시글이 없습니다.");
 	}else{
-		for(int i=0;i<pageRecords;i++){
-			if(i==listSize) break;
+		for(int i=0;i<vlist.size();i++){
+			//if(i==listSize) break;
 			BoardBean bean = vlist.get(i);
 			%>
 			<tr>
@@ -52,6 +63,7 @@
 			</tr>
 		<%} %>
 	<%} %>
+	
 	<tr>
 	<td colspan="3"><select name = "ketField" height="100">
 	<option value="제목">제목
@@ -64,6 +76,46 @@
 	</tr>
 	
 </table>
+</div>
+<div align="center">
+
+<p>
+<%
+	if(totalRecords>0){
+		int pageCount = totalRecords/pageRecords + ((totalRecords%pageRecords == 0) ? 0 : 1);
+		int startPage = ((nowPage-1)/10)*10+1;
+		int block = 10;
+		int endPage = startPage+block-1;
+		
+		if(endPage>pageCount) {
+			endPage = pageCount;
+			}
+		
+		if(startPage>10){
+			%>
+			<a href="list.jsp?pageNum=<%=startPage-10%>">[이전]</a>
+			<%
+			
+		}
+		
+		for(int i =startPage;i<=endPage;i++){
+		if(i==nowPage){
+			%>[<%=i%>]<%}else{ %>
+			
+			<a href="list.jsp?pageNum=<%=i%>">[<%=i%>]</a>
+<%			
+			}
+		}
+		if(endPage<pageCount){
+			%>
+			<a href="list.jsp?pageNum=<%=startPage+10%>">[다음]</a>
+			<%
+		}
+	}
+%>
+<br/><br/>
+<%=totalRecords%>
+</p>
 </div>
 </body>
 </html>
